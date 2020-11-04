@@ -1,0 +1,31 @@
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\obj\Debug\Digital shopping list.csprojAssemblyReference.cache
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\obj\Debug\Music_playlist.Form1.resources
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\obj\Debug\Music_playlist.Properties.Resources.resources
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\obj\Debug\Digital shopping list.csproj.GenerateResource.cache
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\obj\Debug\Digital shopping list.csproj.CoreCompileInputs.cache
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\obj\Debug\Music playlist.exe
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\obj\Debug\Music playlist.pdb
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\bin\Debug\Music playlist.exe.config
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\bin\Debug\Music playlist.exe
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\bin\Debug\Music playlist.pdb
+D:\Fontys\AD\Week 9\Digital shopping list\Digital shopping list\bin\Debug\Music playlist.exe.config
+D:\Fontys\AD\Week 9\Digital shopping list\Digital shopping list\bin\Debug\Music playlist.exe
+D:\Fontys\AD\Week 9\Digital shopping list\Digital shopping list\bin\Debug\Music playlist.pdb
+D:\Fontys\AD\Week 9\Digital shopping list\Digital shopping list\obj\Debug\Music_playlist.Form1.resources
+D:\Fontys\AD\Week 9\Digital shopping list\Digital shopping list\obj\Debug\Music_playlist.Properties.Resources.resources
+D:\Fontys\AD\Week 9\Digital shopping list\Digital shopping list\obj\Debug\Digital shopping list.csproj.GenerateResource.cache
+D:\Fontys\AD\Week 9\Digital shopping list\Digital shopping list\obj\Debug\Digital shopping list.csproj.CoreCompileInputs.cache
+D:\Fontys\AD\Week 9\Digital shopping list\Digital shopping list\obj\Debug\Music playlist.exe
+D:\Fontys\AD\Week 9\Digital shopping list\Digital shopping list\obj\Debug\Music playlist.pdb
+D:\Fontys\AD\Week 9\Digital shopping list\Digital shopping list\obj\Debug\Digital shopping list.csprojAssemblyReference.cache
+D:\Fontys\AD\Week 9\Digital shopping list\Digital shopping list\obj\Debug\Digital_shopping_list.Form1.resources
+D:\Fontys\AD\Week 9\Digital shopping list\Music playlist\bin\Debug\Music playlist.exe.config
+D:\Fontys\AD\Week 9\Digital shopping list\Music playlist\bin\Debug\Music playlist.exe
+D:\Fontys\AD\Week 9\Digital shopping list\Music playlist\bin\Debug\Music playlist.pdb
+D:\Fontys\AD\Week 9\Digital shopping list\Music playlist\obj\Debug\Digital shopping list.csprojAssemblyReference.cache
+D:\Fontys\AD\Week 9\Digital shopping list\Music playlist\obj\Debug\Music_playlist.Form1.resources
+D:\Fontys\AD\Week 9\Digital shopping list\Music playlist\obj\Debug\Music_playlist.Properties.Resources.resources
+D:\Fontys\AD\Week 9\Digital shopping list\Music playlist\obj\Debug\Digital shopping list.csproj.GenerateResource.cache
+D:\Fontys\AD\Week 9\Digital shopping list\Music playlist\obj\Debug\Digital shopping list.csproj.CoreCompileInputs.cache
+D:\Fontys\AD\Week 9\Digital shopping list\Music playlist\obj\Debug\Music playlist.exe
+D:\Fontys\AD\Week 9\Digital shopping list\Music playlist\obj\Debug\Music playlist.pdb

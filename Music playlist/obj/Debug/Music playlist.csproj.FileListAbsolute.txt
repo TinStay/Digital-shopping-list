@@ -1,0 +1,10 @@
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\bin\Debug\Music playlist.exe.config
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\bin\Debug\Music playlist.exe
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\bin\Debug\Music playlist.pdb
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\obj\Debug\Music playlist.csprojAssemblyReference.cache
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\obj\Debug\Music_playlist.Form1.resources
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\obj\Debug\Music_playlist.Properties.Resources.resources
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\obj\Debug\Music playlist.csproj.GenerateResource.cache
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\obj\Debug\Music playlist.csproj.CoreCompileInputs.cache
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\obj\Debug\Music playlist.exe
+D:\Fontys\AD\Week 9\Music playlist\Music playlist\obj\Debug\Music playlist.pdb
