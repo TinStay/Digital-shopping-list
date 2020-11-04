@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Text;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Runtime.InteropServices;
@@ -14,22 +15,28 @@ namespace Music_playlist
 {
     public partial class Form1 : Form
     {
-        // Declaring lists
+        // Shopping lists
         List<string> products = new List<string>();
         List<double> prices = new List<double>();
         List<int> timesAdded = new List<int>();
         List<string> productTypes = new List<string>();
+
+        // Commonly purchased lists
+        List<string> commonProducts = new List<string>();
+        List<double> commonPrices = new List<double>();
+        List<int> commonTimesAdded = new List<int>();
+        List<string> commonProductTypes = new List<string>();
 
 
 
         // Update shown products in the list box
         private void updateShownProducts()
         {
+            // Clear list box
+            lbShownProducts.Items.Clear();
+
             if (products.Count > 0)
             {
-
-                // Clear list box
-                lbShownProducts.Items.Clear();
 
                 string filterType = cbType.SelectedItem.ToString();
 
@@ -116,16 +123,9 @@ namespace Music_playlist
 
                         break;
 
-                    case "Commonly purchased":
-                       
-
-                        
-                        break;
-
                     default:
                         break;
                 }
-
 
 
                 // Update total price
@@ -135,25 +135,26 @@ namespace Music_playlist
                     totalPrice += prices[i];
                 }
 
-
-                // Update most expensive and cheapest products
-                //int mostExpensiveID = prices.IndexOf(prices.Max());
-                //int cheapestID = prices.IndexOf(prices.Min());
-            
-
-
-                // Update most expensive label
-                //lblMostExpensive.Text = $"Most expensive product: {products[mostExpensiveID]}";
-
-                //// Update cheapest label
-                //lblCheapest.Text = $"Cheapest product: {products[cheapestID]}";
-
                 // Update total price label
                 lblTotalPrice.Text = $"Total price: ${totalPrice}";
             }
 
         }
 
+        private void updateCommonList()
+        {
+            // Clear list box
+            lbCommonProducts.Items.Clear();
+
+            for (int i = 0; i < commonProducts.Count; i++)
+            {
+                // Get the index of the product from the product list
+                //int index = coproducts.IndexOf(commonProducts[i]);
+
+                lbCommonProducts.Items.Add($"{commonProducts[i]}({commonProductTypes[i]}) - {commonTimesAdded[i]} x ${commonPrices[i]} ");
+
+            }
+        }
 
         public Form1()
         {
@@ -162,6 +163,7 @@ namespace Music_playlist
             // Set default combo boxes values
             cbView.SelectedItem = "All products";
             cbType.SelectedItem = "All types";
+            lbCommonProducts.Items.Add("No products added to this list.");
         }
 
         
@@ -215,7 +217,7 @@ namespace Music_playlist
                     else
                     {
                         // Update timesAdded for the existing product
-                        timesAdded[indexOfProduct] += 1;
+                        timesAdded[indexOfProduct] += productTimesAdded;
                     }
 
                     
@@ -229,10 +231,60 @@ namespace Music_playlist
                     timesAdded.Add(productTimesAdded);
                     productTypes.Add(newProductType);
 
+
                 }
+
+
+                // Add product to common products
+                if (chbAddToCommon.Checked)
+                {
+                    // Add duplicate products to common list
+                    if (commonProducts.Contains(productName))
+                    {
+                        // Find the index of the existing product
+                        int indexOfProduct = commonProducts.IndexOf(productName);
+
+                        // Check if the new product has the same price
+                        if (commonPrices[indexOfProduct] != productPrice)
+                        {
+                            // This means we have the same product but with a different price.
+                            // I would assume that the new product is from a different brand
+                            // and add it separately
+                            commonProducts.Add(productName);
+                            commonPrices.Add(productPrice);
+                            commonTimesAdded.Add(productTimesAdded);
+                            commonProductTypes.Add(newProductType);
+
+                        }
+                        else
+                        {
+                            // Update timesAdded for the existing product
+                            commonTimesAdded[indexOfProduct] += productTimesAdded;
+                        }
+
+
+
+                    }
+                    else
+                    {
+                        // Add product to common products
+                        commonProducts.Add(productName);
+                        commonPrices.Add(productPrice);
+                        commonTimesAdded.Add(productTimesAdded);
+                        commonProductTypes.Add(newProductType);
+
+
+                    }
+                }
+
+                
+
 
                 // Update the list box with the new products
                 updateShownProducts();
+
+                // Update commonly purchased products list
+                updateCommonList();
 
                 // Clear text inputs from form 
                 tbNameAdd.Text = "";
@@ -252,36 +304,84 @@ namespace Music_playlist
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            string productToBeRemoved = tbNameRemove.Text.Trim(); // Trim() removes spaces from beginning and end of the string
-            int indexOfProduct = products.IndexOf(productToBeRemoved);
-
-            if (products.Contains(productToBeRemoved))
+            if (chbRemoveFromShoppingList.Checked != false || chbRemoveFromCommonList.Checked != false)
             {
+                string productToBeRemoved = tbNameRemove.Text.Trim(); // Trim() removes spaces from beginning and end of the string
+                int indexOfProduct = products.IndexOf(productToBeRemoved);
+                int indexOfCommonProduct = commonProducts.IndexOf(productToBeRemoved);
 
-                if(timesAdded[indexOfProduct] > 1)
+                // Remove from the shopping list
+                if (chbRemoveFromShoppingList.Checked)
                 {
-                    // Decrease the number of times this item was added
-                    timesAdded[indexOfProduct] -= 1;
+                    if (products.Contains(productToBeRemoved))
+                    {
+
+                        if (timesAdded[indexOfProduct] > 1)
+                        {
+                            // Decrease the number of times this item was added
+                            timesAdded[indexOfProduct] -= 1;
+                        }
+                        else if (timesAdded[indexOfProduct] <= 1)
+                        {
+                            // Remove with index
+                            products.RemoveAt(indexOfProduct);
+                            prices.RemoveAt(indexOfProduct);
+                            timesAdded.RemoveAt(indexOfProduct);
+                        }
+
+                        
+
+                        // Clear text input from text box
+                        tbNameRemove.Text = "";
+                    }
+                    else
+                    {
+                        MessageBox.Show("Product not found in your shopping cart.");
+                    }
                 }
-                else if(timesAdded[indexOfProduct] <= 1)
+
+
+                // Remove from the common list
+                if (chbRemoveFromCommonList.Checked)
                 {
-                    // Remove with index
-                    products.RemoveAt(indexOfProduct);
-                    prices.RemoveAt(indexOfProduct);
-                    timesAdded.RemoveAt(indexOfProduct);
+                    if (commonProducts.Contains(productToBeRemoved))
+                    {
+
+                        if (commonTimesAdded[indexOfCommonProduct] > 1)
+                        {
+                            // Decrease the number of times this item was added
+                            commonTimesAdded[indexOfCommonProduct] -= 1;
+                        }
+                        else if (commonTimesAdded[indexOfCommonProduct] <= 1)
+                        {
+                            // Remove with index
+                            commonProducts.RemoveAt(indexOfCommonProduct);
+                            commonPrices.RemoveAt(indexOfCommonProduct);
+                            commonTimesAdded.RemoveAt(indexOfCommonProduct);
+                        }
+
+                        
+
+                        // Clear text input from text box
+                        tbNameRemove.Text = "";
+                    }
+                    else
+                    {
+                        MessageBox.Show("Product not found in your shopping cart.");
+                    }
                 }
 
-                // Update list box
-                updateShownProducts();
-
-                // Clear text input from text box
-                tbNameRemove.Text = "";
             }
-            else
+            else if(chbRemoveFromShoppingList.Checked == false && chbRemoveFromCommonList.Checked == false)
             {
-                MessageBox.Show("Product not found in your shopping cart.");
+                MessageBox.Show("Please select which list you want to remove the item from.");
             }
-           
+
+            // Update shopping list box
+            updateShownProducts();
+
+            // Update common list box
+            updateCommonList();
         }
 
         // Update list everytime combobox selected value changes
@@ -294,5 +394,29 @@ namespace Music_playlist
         {
             updateShownProducts();
         }
+
+        private void btnSelectCommon_Click(object sender, EventArgs e)
+        {
+            // Clear shopping list
+            products.Clear();
+            prices.Clear();
+            timesAdded.Clear();
+            productTypes.Clear();
+
+            for (int i = 0; i < commonProducts.Count; i++)
+            {
+              
+                // Push common products to shopping list
+                products.Add(commonProducts[i]);
+                prices.Add(commonPrices[i]);
+                timesAdded.Add(commonTimesAdded[i]);
+                productTypes.Add(commonProductTypes[i]);
+            }
+
+            updateShownProducts();
+            
+        }
     }
+
+
 }
