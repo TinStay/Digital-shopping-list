@@ -27,7 +27,9 @@ namespace Music_playlist
         List<int> commonTimesAdded = new List<int>();
         List<string> commonProductTypes = new List<string>();
 
-
+        // Discounted products
+        List<string> discountedProducts = new List<string>();
+        List<int> discountedPercentages = new List<int>();
 
         // Update shown products in the list box
         private void updateShownProducts()
@@ -123,20 +125,30 @@ namespace Music_playlist
 
                         break;
 
+                    case "Discounted":
+                        // Clear list box
+                        lbShownProducts.Items.Clear();
+
+                        for (int i = 0; i < discountedProducts.Count; i++)
+                        {
+                            //int index = products.IndexOf(discountedProducts);
+
+
+                            lbShownProducts.Items.Add($"{discountedProducts[i]} - {discountedPercentages[i]}% ");
+
+                        }
+                        break;
+
+
                     default:
                         break;
                 }
 
+                // Update total price 
+                updateTotalPrice();
+                
 
-                // Update total price
-                double totalPrice = 0;
-                for (int i = 0; i < prices.Count; i++)
-                {
-                    totalPrice += prices[i];
-                }
 
-                // Update total price label
-                lblTotalPrice.Text = $"Total price: ${totalPrice}";
             }
 
         }
@@ -156,6 +168,7 @@ namespace Music_playlist
             }
         }
 
+
         public Form1()
         {
             InitializeComponent();
@@ -163,7 +176,7 @@ namespace Music_playlist
             // Set default combo boxes values
             cbView.SelectedItem = "All products";
             cbType.SelectedItem = "All types";
-            lbCommonProducts.Items.Add("No products added to this list.");
+            lbCommonProducts.Items.Add("No products added.");
         }
 
         
@@ -196,47 +209,51 @@ namespace Music_playlist
                     newProductType = "dairy";
                 }
 
-                // Add duplicate products
-                if (products.Contains(productName))
-                {
-                    // Find the index of the existing product
-                    int indexOfProduct = products.IndexOf(productName);
-
-                    // Check if the new product has the same price
-                    if(prices[indexOfProduct] != productPrice)
+                // Add to shopping list
+                if (chbAddToShoppingList.Checked) {
+                    // Add duplicate products
+                    if (products.Contains(productName))
                     {
-                        // This means we have the same product but with a different price.
-                        // I would assume that the new product is from a different brand
-                        // and add it separately
+                        // Find the index of the existing product
+                        int indexOfProduct = products.IndexOf(productName);
+
+                        // Check if the new product has the same price
+                        if (prices[indexOfProduct] != productPrice)
+                        {
+                            // This means we have the same product but with a different price.
+                            // I would assume that the new product is from a different brand
+                            // and add it separately
+                            products.Add(productName);
+                            prices.Add(productPrice);
+                            timesAdded.Add(productTimesAdded);
+                            productTypes.Add(newProductType);
+
+                        }
+                        else
+                        {
+                            // Update timesAdded for the existing product
+                            timesAdded[indexOfProduct] += productTimesAdded;
+                        }
+
+
+
+                    }
+                    else
+                    {
+                        // Add the new variables to their relative list
                         products.Add(productName);
                         prices.Add(productPrice);
                         timesAdded.Add(productTimesAdded);
                         productTypes.Add(newProductType);
 
+
                     }
-                    else
-                    {
-                        // Update timesAdded for the existing product
-                        timesAdded[indexOfProduct] += productTimesAdded;
-                    }
-
-                    
-
                 }
-                else
-                {
-                    // Add the new variables to their relative list
-                    products.Add(productName);
-                    prices.Add(productPrice);
-                    timesAdded.Add(productTimesAdded);
-                    productTypes.Add(newProductType);
-
-
-                }
+                
 
 
                 // Add product to common products
-                if (chbAddToCommon.Checked)
+                if (chbAddToCommonList.Checked)
                 {
                     // Add duplicate products to common list
                     if (commonProducts.Contains(productName))
@@ -277,6 +294,25 @@ namespace Music_playlist
                     }
                 }
 
+                if (chbAddToDiscounted.Checked) {  
+                
+
+                    if (tbDiscount.Text != "")
+                    {
+                        int discount = Convert.ToInt32(tbDiscount.Text);
+
+                        // Add product to discounted products
+                        discountedProducts.Add(productName);
+                        discountedPercentages.Add(discount);
+                        
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please enter discount percentage.");
+                    }
+                }
+
                 
 
 
@@ -286,10 +322,25 @@ namespace Music_playlist
                 // Update commonly purchased products list
                 updateCommonList();
 
+
                 // Clear text inputs from form 
                 tbNameAdd.Text = "";
                 tbPriceAdd.Text = "";
+                tbDiscount.Text = "";
 
+                //Clear radioboxes
+                rbFruit.Checked = false;
+                rbVegetable.Checked = false;
+                rbMeat.Checked = false;
+                rbDairy.Checked = false;
+
+                // Clear checkboxes
+                chbAddToShoppingList.Checked = false;
+                chbAddToCommonList.Checked = false;
+                chbAddToDiscounted.Checked = false;
+
+                // Clear amount field
+                nudAmount.Value = 0;
 
             }
             else
@@ -338,6 +389,8 @@ namespace Music_playlist
                     {
                         MessageBox.Show("Product not found in your shopping cart.");
                     }
+
+
                 }
 
 
@@ -370,6 +423,11 @@ namespace Music_playlist
                         MessageBox.Show("Product not found in your shopping cart.");
                     }
                 }
+
+                
+
+                //Update total price
+                updateTotalPrice();
 
             }
             else if(chbRemoveFromShoppingList.Checked == false && chbRemoveFromCommonList.Checked == false)
@@ -416,7 +474,61 @@ namespace Music_playlist
             updateShownProducts();
             
         }
+
+        // Update total price
+        double totalPrice;
+
+        private void updateTotalPrice()
+        {
+            
+            for (int i = 0; i < discountedProducts.Count; i++)
+            {
+
+                if (products.Contains(discountedProducts[i]))
+                {
+                    int indexProduct = products.IndexOf(discountedProducts[i]);
+
+                    // If the product we have put in our shopping list is discounted
+                    double discountedPrice = prices[indexProduct] * (discountedPercentages[i] / 100);
+                    totalPrice += discountedPrice;
+                }
+                else
+                {
+                    totalPrice += prices[i];
+                }
+
+            }
+
+            // Update total price label
+            lblTotalPrice.Text = $"Total price: ${totalPrice}";
+        }
+
+        private void tbDiscount_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chbAddToDiscounted_CheckedChanged(object sender, EventArgs e)
+        {
+           
+            
+        }
+
+        private void chbAddToDiscounted_CheckedChanged_1(object sender, EventArgs e)
+        {
+            if (chbAddToDiscounted.Checked)
+            {
+                // Show percentage field
+                tbDiscount.ReadOnly = false;
+            }
+            else
+            {
+                // Hide percentage field
+                tbDiscount.ReadOnly = true;
+            }
+        }
     }
 
 
 }
+
