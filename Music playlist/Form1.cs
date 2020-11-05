@@ -29,7 +29,7 @@ namespace Music_playlist
 
         // Discounted products
         List<string> discountedProducts = new List<string>();
-        List<int> discountedPercentages = new List<int>();
+        List<double> discountedPrices = new List<double>();
 
         // Update shown products in the list box
         private void updateShownProducts()
@@ -37,106 +37,146 @@ namespace Music_playlist
             // Clear list box
             lbShownProducts.Items.Clear();
 
-            if (products.Count > 0)
+            if (products.Count > 0 || discountedProducts.Count > 0)
             {
 
-                string filterType = cbType.SelectedItem.ToString();
+            
+            string filterType = cbType.SelectedItem.ToString();
 
-                // Combobox filter
-                switch (cbView.SelectedItem)
+
+            // Combobox filter
+            switch (cbView.SelectedItem)
                 {
+                
                     case "All products":
-                        // Fill list box
-                        for (int i = 0; i < products.Count; i++)
+
+                        if (products.Count > 0)
                         {
-                            // Filter by product type
-                            if(productTypes[i] == filterType)
+                            // Fill list box
+                            for (int i = 0; i < products.Count; i++)
                             {
-                                lbShownProducts.Items.Add($"{products[i]}({productTypes[i]}) - {timesAdded[i]} x ${prices[i]} ");
-                            }else if(filterType == "All types")
+                                // Filter by product type
+                                if (productTypes[i] == filterType)
+                                {
+                                    lbShownProducts.Items.Add($"{products[i]}({productTypes[i]}) - {timesAdded[i]} x ${prices[i]} ");
+                                }
+                                else if (filterType == "All types")
+                                {
+                                    lbShownProducts.Items.Add($"{products[i]}({productTypes[i]}) - {timesAdded[i]} x ${prices[i]} ");
+                                }
+                            }
+
+                            // If there are no products with the current filters
+                            if (lbShownProducts.Items.Count == 0)
                             {
-                                lbShownProducts.Items.Add($"{products[i]}({productTypes[i]}) - {timesAdded[i]} x ${prices[i]} ");
-                            }                            
+                                lbShownProducts.Items.Add($"No products for the selected filters.");
+                            }
+                        }
+                        else
+                        {
+                            lbShownProducts.Items.Add($"No products in this list.");
                         }
 
-                        // If there are no products with the current filters
-                        if(lbShownProducts.Items.Count == 0)
-                        {
-                            lbShownProducts.Items.Add($"No products for the selected filters.");
-                        }
+                        
 
                         break;
 
                     case "Cheapest":
-                        double cheapestPrice = prices.Min();
 
-                        // Loop through all products
-                        for (int i = 0; i < products.Count; i++)
+                        if (products.Count > 0)
                         {
-                            // If a product is with the cheapest price, add it to the cheapest list
-                            if(prices[i] == cheapestPrice)
+                            double cheapestPrice = prices.Min();
+
+                            // Loop through all products
+                            for (int i = 0; i < products.Count; i++)
                             {
-                                // Filter by product type
-                                if (productTypes[i] == filterType)
+                                // If a product is with the cheapest price, add it to the cheapest list
+                                if (prices[i] == cheapestPrice)
                                 {
-                                    lbShownProducts.Items.Add($"{products[i]}({productTypes[i]}) - {timesAdded[i]} x ${prices[i]} ");
-                                }
-                                else if (filterType == "All types")
-                                {
-                                    lbShownProducts.Items.Add($"{products[i]}({productTypes[i]}) - {timesAdded[i]} x ${prices[i]} ");
+                                    // Filter by product type
+                                    if (productTypes[i] == filterType)
+                                    {
+                                        lbShownProducts.Items.Add($"{products[i]}({productTypes[i]}) - {timesAdded[i]} x ${prices[i]} ");
+                                    }
+                                    else if (filterType == "All types")
+                                    {
+                                        lbShownProducts.Items.Add($"{products[i]}({productTypes[i]}) - {timesAdded[i]} x ${prices[i]} ");
+                                    }
                                 }
                             }
-                        }
 
-                        // If there are no products with the current filters
-                        if (lbShownProducts.Items.Count == 0)
-                        {
-                            lbShownProducts.Items.Add($"No products for the selected filters.");
+                            // If there are no products with the current filters
+                            if (lbShownProducts.Items.Count == 0)
+                            {
+                                lbShownProducts.Items.Add($"No products for the selected filters.");
+                            }
                         }
+                        else
+                        {
+                            lbShownProducts.Items.Add($"No products in this list.");
+                        }
+                       
 
                         break;
 
                     case "Most expensive":
-                        double mostExpPrice = prices.Max();
-
-                        // Loop through all products
-                        for (int i = 0; i < products.Count; i++)
+                        if (products.Count > 0)
                         {
-                            // If a product is with the cheapest price, add it to the cheapest list
-                            if (prices[i] == mostExpPrice)
+                            double mostExpPrice = prices.Max();
+
+                            // Loop through all products
+                            for (int i = 0; i < products.Count; i++)
                             {
-                                // Filter by product type
-                                if (productTypes[i] == filterType)
+                                // If a product is with the cheapest price, add it to the cheapest list
+                                if (prices[i] == mostExpPrice)
                                 {
-                                    lbShownProducts.Items.Add($"{products[i]}({productTypes[i]}) - {timesAdded[i]} x ${prices[i]} ");
-                                }
-                                else if (filterType == "All types")
-                                {
-                                    lbShownProducts.Items.Add($"{products[i]}({productTypes[i]}) - {timesAdded[i]} x ${prices[i]} ");
+                                    // Filter by product type
+                                    if (productTypes[i] == filterType)
+                                    {
+                                        lbShownProducts.Items.Add($"{products[i]}({productTypes[i]}) - {timesAdded[i]} x ${prices[i]} ");
+                                    }
+                                    else if (filterType == "All types")
+                                    {
+                                        lbShownProducts.Items.Add($"{products[i]}({productTypes[i]}) - {timesAdded[i]} x ${prices[i]} ");
+                                    }
                                 }
                             }
-                        }
 
-                        // If there are no products with the current filters
-                        if (lbShownProducts.Items.Count == 0)
-                        {
-                            lbShownProducts.Items.Add($"No products for the selected filters.");
+                            // If there are no products with the current filters
+                            if (lbShownProducts.Items.Count == 0)
+                            {
+                                lbShownProducts.Items.Add($"No products for the selected filters.");
+                            }
                         }
+                        else
+                        {
+                            lbShownProducts.Items.Add($"No products in this list.");
+                        }
+                        
 
                         break;
 
                     case "Discounted":
                         // Clear list box
-                        lbShownProducts.Items.Clear();
+                        //lbShownProducts.Items.Clear();
 
-                        for (int i = 0; i < discountedProducts.Count; i++)
+                        if(discountedProducts.Count > 0)
                         {
-                            //int index = products.IndexOf(discountedProducts);
+                            for (int i = 0; i < discountedProducts.Count; i++)
+                            {
+                                //int index = products.IndexOf(discountedProducts);
 
 
-                            lbShownProducts.Items.Add($"{discountedProducts[i]} - {discountedPercentages[i]}% ");
+                                lbShownProducts.Items.Add($"{discountedProducts[i]} - Discounted price: ${discountedPrices[i]}");
 
+                            }
                         }
+                        else
+                        {
+                            lbShownProducts.Items.Add("No products in that list.");
+                        }
+
+                        
                         break;
 
 
@@ -146,10 +186,10 @@ namespace Music_playlist
 
                 // Update total price 
                 updateTotalPrice();
-                
-
 
             }
+
+
 
         }
 
@@ -176,6 +216,7 @@ namespace Music_playlist
             // Set default combo boxes values
             cbView.SelectedItem = "All products";
             cbType.SelectedItem = "All types";
+            lbShownProducts.Items.Add("No products in this list.");
             lbCommonProducts.Items.Add("No products added.");
         }
 
@@ -185,29 +226,36 @@ namespace Music_playlist
         private void btnAdd_Click(object sender, EventArgs e)
         {
             // Check if form is correctly filled
-            if (tbNameAdd.Text != "" && tbPriceAdd.Text != "" && (rbFruit.Checked || rbMeat.Checked || rbVegetable.Checked || rbDairy.Checked))
+            if (tbNameAdd.Text != "" && nudPrice.Value != 0 && cbProductType.SelectedItem != null && (chbAddToCommonList.Checked || chbAddToShoppingList.Checked || chbAddToDiscounted.Checked))
             {
                 // Declare variables for the new product
                 string productName = tbNameAdd.Text.Trim(); // Trim() removes spaces from beginning and end of the string
-                double productPrice = Convert.ToDouble(tbPriceAdd.Text.Trim());
+                double productPrice = Convert.ToDouble(nudPrice.Value);
                 int productTimesAdded = Convert.ToInt32(nudAmount.Value);
-                string newProductType;
+                string newProductType = "other";
 
-                if (rbFruit.Checked)
+                
+                switch (cbProductType.SelectedItem)
                 {
-                    newProductType = "fruit";
-                }else if (rbMeat.Checked)
-                {
-                    newProductType = "meat";
+                    case "fruit":
+                        newProductType = "fruit";
+                        break;
+                    case "meat":
+                        newProductType = "meat";
+                        break;
+                    case "vegetable":
+                        newProductType = "vegetable";
+                        break;
+                    case "dairy":
+                        newProductType = "dairy";
+                        break;
+                    case "other":
+                        newProductType = "other";
+                        break;
+                    default:
+                        break;
                 }
-                else if (rbVegetable.Checked)
-                {
-                    newProductType = "vegetable";
-                }
-                else
-                {
-                    newProductType = "dairy";
-                }
+
 
                 // Add to shopping list
                 if (chbAddToShoppingList.Checked) {
@@ -299,13 +347,11 @@ namespace Music_playlist
 
                     if (tbDiscount.Text != "")
                     {
-                        int discount = Convert.ToInt32(tbDiscount.Text);
+                        double discountPrice = Convert.ToDouble(tbDiscount.Text);
 
                         // Add product to discounted products
                         discountedProducts.Add(productName);
-                        discountedPercentages.Add(discount);
-                        
-
+                        discountedPrices.Add(discountPrice);
                     }
                     else
                     {
@@ -325,22 +371,20 @@ namespace Music_playlist
 
                 // Clear text inputs from form 
                 tbNameAdd.Text = "";
-                tbPriceAdd.Text = "";
+                
                 tbDiscount.Text = "";
 
-                //Clear radioboxes
-                rbFruit.Checked = false;
-                rbVegetable.Checked = false;
-                rbMeat.Checked = false;
-                rbDairy.Checked = false;
+                //Clear product type field
+                cbProductType.SelectedItem = null;
 
                 // Clear checkboxes
                 chbAddToShoppingList.Checked = false;
                 chbAddToCommonList.Checked = false;
                 chbAddToDiscounted.Checked = false;
 
-                // Clear amount field
-                nudAmount.Value = 0;
+                // Reset numberUpAndDown field
+                nudPrice.Value = nudPrice.Minimum;
+                nudAmount.Value = nudAmount.Minimum;
 
             }
             else
@@ -355,14 +399,14 @@ namespace Music_playlist
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            if (chbRemoveFromShoppingList.Checked != false || chbRemoveFromCommonList.Checked != false)
+            if (rbRemoveFromShoppingList.Checked != false || rbRemoveFromCommon.Checked != false || rbRemoveFromDiscounted.Checked != false)
             {
                 string productToBeRemoved = tbNameRemove.Text.Trim(); // Trim() removes spaces from beginning and end of the string
                 int indexOfProduct = products.IndexOf(productToBeRemoved);
                 int indexOfCommonProduct = commonProducts.IndexOf(productToBeRemoved);
 
                 // Remove from the shopping list
-                if (chbRemoveFromShoppingList.Checked)
+                if (rbRemoveFromShoppingList.Checked)
                 {
                     if (products.Contains(productToBeRemoved))
                     {
@@ -380,7 +424,8 @@ namespace Music_playlist
                             timesAdded.RemoveAt(indexOfProduct);
                         }
 
-                        
+                        // Clear text input from text box
+                        rbRemoveFromShoppingList.Checked = false;
 
                         // Clear text input from text box
                         tbNameRemove.Text = "";
@@ -395,17 +440,16 @@ namespace Music_playlist
 
 
                 // Remove from the common list
-                if (chbRemoveFromCommonList.Checked)
+                if(rbRemoveFromCommon.Checked)
                 {
                     if (commonProducts.Contains(productToBeRemoved))
                     {
-
                         if (commonTimesAdded[indexOfCommonProduct] > 1)
                         {
                             // Decrease the number of times this item was added
                             commonTimesAdded[indexOfCommonProduct] -= 1;
                         }
-                        else if (commonTimesAdded[indexOfCommonProduct] <= 1)
+                        else if(commonTimesAdded[indexOfCommonProduct] <= 1)
                         {
                             // Remove with index
                             commonProducts.RemoveAt(indexOfCommonProduct);
@@ -413,24 +457,46 @@ namespace Music_playlist
                             commonTimesAdded.RemoveAt(indexOfCommonProduct);
                         }
 
-                        
-
                         // Clear text input from text box
-                        tbNameRemove.Text = "";
+                        rbRemoveFromCommon.Checked = false;
                     }
                     else
                     {
-                        MessageBox.Show("Product not found in your shopping cart.");
+                        MessageBox.Show("Product not found in your common list.");
                     }
+                }
+
+                // Remove from the common list
+                if (rbRemoveFromDiscounted.Checked)
+                {
+                    if (discountedProducts.Contains(productToBeRemoved))
+                    {
+                        int index = discountedProducts.IndexOf(productToBeRemoved);
+
+                        // Remove product from discounted list
+                        discountedProducts.RemoveAt(index);
+                        discountedPrices.RemoveAt(index);
+
+                        // Clear text input from text box
+                        tbNameRemove.Text = "";
+
+                        // Clear text input from text box
+                        rbRemoveFromDiscounted.Checked = false;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Product not found in your discounted list.");
+                    }
+
+                    
                 }
 
                 
 
-                //Update total price
-                updateTotalPrice();
+
 
             }
-            else if(chbRemoveFromShoppingList.Checked == false && chbRemoveFromCommonList.Checked == false)
+            else if(rbRemoveFromShoppingList.Checked == false && rbRemoveFromCommon.Checked == false && rbRemoveFromDiscounted.Checked == false)
             {
                 MessageBox.Show("Please select which list you want to remove the item from.");
             }
@@ -440,6 +506,11 @@ namespace Music_playlist
 
             // Update common list box
             updateCommonList();
+
+            // Update total price
+            updateTotalPrice();
+
+
         }
 
         // Update list everytime combobox selected value changes
@@ -475,44 +546,60 @@ namespace Music_playlist
             
         }
 
-        // Update total price
-        double totalPrice;
+        
 
         private void updateTotalPrice()
         {
-            
-            for (int i = 0; i < discountedProducts.Count; i++)
+            // Update total price
+            double totalPrice = 0;
+            double discountSum = 0;
+
+            for (int i = 0; i < products.Count; i++)
             {
 
-                if (products.Contains(discountedProducts[i]))
+                if (discountedProducts.Contains(products[i]))
                 {
-                    int indexProduct = products.IndexOf(discountedProducts[i]);
+                    int indexProduct = discountedProducts.IndexOf(products[i]);
 
-                    // If the product we have put in our shopping list is discounted
-                    double discountedPrice = prices[indexProduct] * (discountedPercentages[i] / 100);
-                    totalPrice += discountedPrice;
+                    // double discountedPrice = prices[i] * (discountedPrices[indexProduct] / 100);
+
+                    //    //int indexProduct = products.IndexOf(discountedProducts[i]);
+                    //    int ind = Convert.ToInt32(products[i].Trim();
+                    //    int indexProduct = discountedProducts.IndexOf(ind);
+
+                    //    // If the product we have put in our shopping list is discounted
+                    //    double discountedPrice = prices[i] * ( discountedPrices[i] / 100);
+
+                    // Append to discount sum
+                    discountSum += (prices[i] - discountedPrices[indexProduct]) * timesAdded[i];
+
+                    //totalPrice += discountedPrices[indexProduct] * timesAdded[i];
+                    totalPrice += prices[i] * timesAdded[i];
                 }
                 else
                 {
-                    totalPrice += prices[i];
+                    totalPrice += prices[i] * timesAdded[i];
                 }
-
             }
 
-            // Update total price label
-            lblTotalPrice.Text = $"Total price: ${totalPrice}";
-        }
 
-        private void tbDiscount_TextChanged(object sender, EventArgs e)
-        {
+            // Update total price label with 2 places after comma
+            double newTotal = (Math.Truncate(totalPrice * 100) / 100) - discountSum;
+  
+            // Convert in with a format 0.00
+            newTotal.ToString("0.00");
 
-        }
+            // Change total price label
+            lblTotalPrice.Text = $"${newTotal}";
 
-        private void chbAddToDiscounted_CheckedChanged(object sender, EventArgs e)
-        {
-           
+            // Change total price label
+            lblDiscount.Text = $"Total(${totalPrice}) - discount(${discountSum}) = ${newTotal}";
             
         }
+
+
+
+
 
         private void chbAddToDiscounted_CheckedChanged_1(object sender, EventArgs e)
         {
@@ -520,6 +607,7 @@ namespace Music_playlist
             {
                 // Show percentage field
                 tbDiscount.ReadOnly = false;
+                
             }
             else
             {
@@ -527,8 +615,8 @@ namespace Music_playlist
                 tbDiscount.ReadOnly = true;
             }
         }
-    }
 
+    }
 
 }
 
